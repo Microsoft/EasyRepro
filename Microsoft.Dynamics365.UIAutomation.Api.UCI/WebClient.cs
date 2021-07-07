@@ -17,7 +17,7 @@ using System.Web;
 
 namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
 {
-    public class WebClient : BrowserPage
+    public class WebClient : BrowserPage, IDisposable
     {
         public List<ICommandResult> CommandResults => Browser.CommandResults;
         public Guid ClientSessionId;
@@ -283,7 +283,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                             //else we landed on the Web Client main page or app picker page
                             SwitchToDefaultContent(driver);
                     },
-                    () => new InvalidOperationException("Load Main Page Fail.")
+                    () => throw new InvalidOperationException("Load Main Page Fail.")
                 );
 
                 return LoginResult.Success;
@@ -5300,7 +5300,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
             ThinkTime((int)timespan.TotalMilliseconds);
         }
 
-        internal void Dispose()
+        public void Dispose()
         {
             Browser.Dispose();
         }
